@@ -19,6 +19,34 @@ import pandas as pd
 import cv2
 from skimage import io
 from PIL import Image 
+# import aspose.words as aw
+# import ironpdf
+
+# from md2pdf.core import md2pdf
+
+def pdfGen(pages, lines, images, word, wordcloudpath, summary, pdftable, filepath):
+    # Read the content template from a Markdown file
+    with open("format.md", "r") as md_file:
+        text_template = md_file.read()
+
+    # Format the text with the provided data
+    text = text_template.format(
+        pages, lines, images, word, wordcloudpath, 
+         summary
+    )
+
+    # Create a new PDF document
+    doc = fitz.open()
+
+    # Add a new page to the document(
+    page = doc.new_page()
+
+    # Add the text data to the page
+    page.insert_text((100, 100), text, fontsize=12)
+
+    # Save the PDF document
+    doc.save(filepath)
+        
 
 
 import openai
@@ -53,12 +81,15 @@ def readFile(uploaded_file):
     pdf_text=""
     # progress_text = "Reading Pdf Text... In Progress "
     # my_bar = st.progress(0.0, text=progress_text)
-    for page_num,page in  enumerate(pdf_file.pages):
-            pdf_text+="\n"
-            pdf_text += page.extract_text()
-            percent = (page_num )/pagesCount
-            # my_bar.progress(percent,text = progress_text+" "+str(percent*100) )
-    # my_bar.empty()
+    try:
+        for page_num,page in  enumerate(pdf_file.pages):
+                pdf_text+="\n"
+                pdf_text += page.extract_text()
+                percent = (page_num )/pagesCount
+                # my_bar.progress(percent,text = progress_text+" "+str(percent*100) )
+        # my_bar.empty()
+    except:
+        pass
     return pdf_text
 
 @st.cache_data
@@ -66,15 +97,18 @@ def imagesExtract(uploaded_file):
     count = 0
     img_data = []
     pdf_file = PyPDF2.PdfReader(uploaded_file)
-    for page_num,page in  enumerate(pdf_file.pages):
-        for image_file_object in page.images:
-            fileName = str(count) + image_file_object.name
-            image_file_name = os.path.join(folderName,fileName)
-            with open(image_file_name, "wb") as fp:
-                fp.write(image_file_object.data)
-                count += 1
-            # st.image(image_file_name)
-            img_data.append(fileName)
+    try:
+        for page_num,page in  enumerate(pdf_file.pages):
+            for image_file_object in page.images:
+                fileName = str(count) + image_file_object.name
+                image_file_name = os.path.join(folderName,fileName)
+                with open(image_file_name, "wb") as fp:
+                    fp.write(image_file_object.data)
+                    count += 1
+                # st.image(image_file_name)
+                img_data.append(fileName)
+    except:
+        pass
     return img_data
 
 @st.cache_data
@@ -85,8 +119,10 @@ def generate_word_cloud(text,filename):
     plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis('off')
     plt.savefig("{}.png".format(filename), format="png")
-    st.image("{}.png".format(filename))
     plt.show()
+    st.image("{}.png".format(filename))
+    return "{}.png".format(filename)
+    
 
 @st.cache_data
 def pdf_to_images(pdf_path):
@@ -139,42 +175,16 @@ def plot_histogram(monochrome_pages, unicolor_pages):
 @st.cache_data
 def openaisummarize(pdftext,wordcount):
     openai.api_key = st.secrets['API_Key']
-
     response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[{"role": "user", "content": f"summarize following content for me in {wordcount} words:\n"+pdftext[:4000]}],
     temperature=0,
     max_tokens=1024
     )
-    st.write(response["choices"][0]["message"]["content"])
+    return response["choices"][0]["message"]["content"]
+    # st.write(response["choices"][0]["message"]["content"])
 
-# def plot_colors(color_data, num_colors=10):
-#     sorted_colors = sorted(color_data.items(), key=lambda x: x[1], reverse=True)
-#     top_colors = sorted_colors[:num_colors]
 
-#     color_labels, color_counts = zip(*top_colors)
-
-#     # Create a bar chart of the top colors
-#     plt.bar(range(len(top_colors)), color_counts, color=[tuple(map(lambda x: x / 255.0, color)) for color in color_labels])
-#     plt.xticks(range(len(top_colors)), ['' for _ in top_colors])
-#     plt.xlabel('Colors')
-#     plt.ylabel('Frequency')
-#     plt.title('Top {} Colors in the PDF'.format(num_colors))
-#     plt.show()
-
-# # @st.cache_data
-# def analyze_color_distribution(image_path):
-#     image = Image.open(image_path)
-#     colors = image.getcolors(image.width * image.height)
-
-#     if colors is not None:
-#         color_counts, color_values = zip(*colors)
-#         total_pixels = sum(color_counts)
-#         relative_frequencies = [count / total_pixels for count in color_counts]
-
-#         return color_values, relative_frequencies
-#     else:
-#         return [], []
 
 # Page 2: Generate Report
 if menu == "Generate Report":
@@ -211,10 +221,12 @@ if menu == "Generate Report":
         with st.expander("Extracted Text"):
             st.write(pdf_text)
 
+        summary = None
         with st.expander("Summary"):
             # select number of words
             numWords = st.number_input('Number of Words', min_value=10, max_value=200)
-            openaisummarize(pdf_text,numWords)
+            summary =  openaisummarize(pdf_text,30)
+            st.write(openaisummarize(pdf_text,numWords))
         
         # images
         img_data = imagesExtract(uploaded_file)
@@ -241,10 +253,23 @@ if menu == "Generate Report":
         st.write("## Word count :",len(words))
         st.write("## Images count :",len(img_data))
 
-        if(len(words)): generate_word_cloud(pdf_text,filename)
+        cloudpath = ""
+        if(len(words)): cloudpath=generate_word_cloud(pdf_text,filename)
         else: st.write("Cannot generate Word cloud, No text found in Pdf")
 
         # st.write("## word cloud")
+        # pdfGen(pages,lines,images,word,wordcloudpath,summary,pdftable,fielpath)
+        pdfGen(
+            pagesCount,len(lines),len(words),len(img_data),"![]({})".format(cloudpath),summary,"",f"{filename}.pdf"
+        )
+
+        with open(f"{filename}.pdf", "rb") as pdf_file:
+            PDFbyte = pdf_file.read()
+
+        st.download_button(label="Export_Report",
+                            data=PDFbyte,
+                            file_name="report.pdf",
+                            mime='application/octet-stream')
 
 
         # st.image("{}.png".format(filename))
@@ -276,11 +301,14 @@ if menu == "Generate Report":
                 image = cv2.imread(image_paths[selected_page - 1])
                 for i, col in enumerate(['b', 'g', 'r']):
                     hist = cv2.calcHist([image], [i], None, [256], [0, 256])
+                    # 
                     plt.plot(hist, color = col)
+                    plt.ylim([0.0,0.4*1e6])
                     plt.xlim([0, 256])
                     
                 a.cols[1].pyplot(plt)
 
+        
 
 def displayPDF(upl_file, width):
     # Read file as bytes:
