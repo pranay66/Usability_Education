@@ -138,7 +138,7 @@ def plot_histogram(monochrome_pages, unicolor_pages):
 
 @st.cache_data
 def openaisummarize(pdftext,wordcount):
-    openai.api_key = os.environ['API_Key']
+    openai.api_key = st.secrets['API_Key']
 
     response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
