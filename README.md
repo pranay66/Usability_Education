@@ -8,26 +8,50 @@
 
 # Streamlit PDF Analysis Web Application
 
-## Introduction
-
-This Streamlit web application is designed to simplify the process of working with PDF documents. Its primary utility is to assist users in extracting valuable information and insights from PDF files. Here's a concise description of the app's utility:
+This Streamlit-based application offers a comprehensive suite of tools for PDF handling and analysis. It integrates various Python libraries to facilitate a wide range of operations on PDF documents, making it a versatile tool for users who need to analyze, modify, or extract information from PDF files.
 
 ## Features
 
-1. **PDF Document Analysis**: This app allows users to upload PDF files, making it a convenient tool for individuals who need to work with PDF reports, documents, or research papers.
+### 1. **PDF Report Generation**
+   - **Text and Image Extraction**: Extract text and images from PDF files.
+   - **Word Cloud Generation**: Create a word cloud from the extracted text to visualize key terms and themes.
+   - **Report Creation**: Compile extracted data into a formatted PDF report.
 
-2. **Text Extraction**: Users can extract the text content from the PDF files they upload. This feature is particularly useful for quickly accessing and analyzing the textual information within PDF documents.
+### 2. **Document Viewing**
+   - **PDF Viewer**: In-app feature to view the content of uploaded PDF documents.
 
-3. **Content Summarization**: The app offers a summarization feature, powered by OpenAI's GPT-3.5 Turbo. Users can specify the desired word count for a concise summary of the PDF's content.
+### 3. **Font Analysis**
+   - **Font Extraction**: Analyze and list the fonts used in the PDF, including style and size.
 
-4. **Image Extraction**: In addition to text, the app can extract images from the uploaded PDF. Users can view and select specific images for further analysis or reference.
+### 4. **Translation**
+   - **PDF Translation**: Translate text extracted from PDFs into various languages using Google's translation API.
 
-5. **Data Insights**: The app provides valuable statistics, such as the number of pages, lines, words, and images present in the PDF. This enables users to gain a quick overview of the document's characteristics.
+### 5. **Chat-based PDF Interaction (ChatPDF)**
+   - **AI-Enhanced Q&A**: Ask questions about the PDF's content and get answers, leveraging OpenAI's GPT model for intelligent text analysis.
 
-6. **Word Cloud Generation**: Users can generate and view word clouds, which offer a visual representation of the most frequently occurring words in the PDF. This is a helpful tool for identifying key themes and topics within the document.
+### 6. **Accessibility Features**
+   - **Low Vision Support**: Modify PDFs to enhance accessibility for users with low vision, including font adjustments.
 
-7. **Font Analysis**: For those interested in the document's typography, the app includes a font analysis feature. Users can explore font size, type, sub-type, name, descriptor, and encoding type used within the PDF.
+### 7. **Sentiment Analysis and Document Classification**
+   - **Sentiment Analysis**: Assess the overall sentiment of the text using Expert AI’s sentiment analysis.
+   - **Document Classification**: Categorize the document's content into various classes.
 
+### 8. **NLP English Level Analysis**
+   - **Linguistic Analysis**: Analyze the text for grammar, parts of speech, entities, relations, and topic analysis.
+
+### 9. **PDF to Audio Conversion**
+   - **Text-to-Speech**: Convert PDF text content into audio format, facilitating an auditory mode of consumption.
+
+## Libraries and Technologies Used
+
+- **Streamlit**: For creating the web application.
+- **PyPDF2 and Fitz (PyMuPDF)**: For PDF manipulation and rendering.
+- **WordCloud**: To generate word clouds from text.
+- **OpenAI GPT**: For AI-based text analysis and question-answering.
+- **Expert AI Client**: For sentiment analysis, document classification, and NLP.
+- **Google Translate API**: For translating text.
+- **gTTS (Google Text-to-Speech)**: For converting text to speech.
+  
 ## Who Can Benefit
 
 In essence, this app is a versatile assistant for anyone who needs to work with PDF documents. It streamlines the process of accessing, summarizing, and visualizing PDF content, making it a valuable resource for students, researchers, professionals, and anyone who regularly deals with PDF reports and documents.
