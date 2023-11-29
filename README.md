@@ -15,34 +15,36 @@ This Streamlit-based application offers a comprehensive suite of tools for PDF h
 
 ## Features
 
-### 1. **PDF Report Generation**
+### 1-4. **PDF Report Generation**
    - **Text and Image Extraction**: Extract text and images from PDF files.
    - **Word Cloud Generation**: Create a word cloud from the extracted text to visualize key terms and themes.
    - **Report Creation**: Compile extracted data into a formatted PDF report.
+   - **Content Summarizer**: SUmmarizes pdf content
+   - **COlour distribution analyis**
 
-### 2. **Document Viewing**
+### 5. **Document Viewing**
    - **PDF Viewer**: In-app feature to view the content of uploaded PDF documents.
 
-### 3. **Font Analysis**
+### 6. **Font Analysis**
    - **Font Extraction**: Analyze and list the fonts used in the PDF, including style and size.
 
-### 4. **Translation**
+### 7. **Translation**
    - **PDF Translation**: Translate text extracted from PDFs into various languages using Google's translation API.
 
-### 5. **Chat-based PDF Interaction (ChatPDF)**
+### 8. **Chat-based PDF Interaction (ChatPDF)**
    - **AI-Enhanced Q&A**: Ask questions about the PDF's content and get answers, leveraging OpenAI's GPT model for intelligent text analysis.
 
-### 6. **Accessibility Features**
+### 9. **Accessibility Features**
    - **Low Vision Support**: Modify PDFs to enhance accessibility for users with low vision, including font adjustments.
 
-### 7. **Sentiment Analysis and Document Classification**
+### 10. **Sentiment Analysis and Document Classification**
    - **Sentiment Analysis**: Assess the overall sentiment of the text using Expert AI’s sentiment analysis.
    - **Document Classification**: Categorize the document's content into various classes.
 
-### 8. **NLP English Level Analysis**
+### 11. **NLP English Level Analysis**
    - **Linguistic Analysis**: Analyze the text for grammar, parts of speech, entities, relations, and topic analysis.
 
-### 9. **PDF to Audio Conversion**
+### 12. **PDF to Audio Conversion**
    - **Text-to-Speech**: Convert PDF text content into audio format, facilitating an auditory mode of consumption.
 
 ## Libraries and Technologies Used
