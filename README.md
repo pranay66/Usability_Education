@@ -1,10 +1,10 @@
 # Usability_Education
 
 ## commands
-> pip install -r requirements.txt
->
-> 
->streamlit run app.py
+```
+python pip install -r requirements.txt
+streamlit run app.py
+```
 
 # Streamlit PDF Analysis Web Application
 
